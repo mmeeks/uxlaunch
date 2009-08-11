@@ -164,13 +164,13 @@ void autostart_panels(void)
 	if (!strstr(session, "mutter"))
 		return;
 
-	desktop_entry_add("/usr/libexec/moblin-panel-myzone", -1);
-	desktop_entry_add("/usr/libexec/moblin-panel-status", 0);
-	desktop_entry_add("/usr/libexec/moblin-panel-people", 0);
-	desktop_entry_add("/usr/libexec/moblin-panel-internet", 0);
-	desktop_entry_add("/usr/libexec/moblin-panel-media", 1);
-	desktop_entry_add("/usr/libexec/moblin-panel-pasteboard", 0);
-	desktop_entry_add("/usr/libexec/moblin-panel-applications", 1);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-myzone", -1);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-status", 0);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-people", 0);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-internet", 0);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-media", 1);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-pasteboard", 0);
+	desktop_entry_add(MUTTER_LIBEXECDIR "/moblin-panel-applications", 1);
 }
 
 
