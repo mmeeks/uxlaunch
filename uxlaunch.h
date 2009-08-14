@@ -3,6 +3,7 @@
 
 #include <X11/Xauth.h>
 
+#define LOGFILE "/var/log/uxlaunch.log"
 
 /*
  * Target user information
@@ -22,6 +23,7 @@ extern char username[];
 extern int session_pid;
 
 extern int verbose;
+extern int x_session_only;
 
 extern void get_options(int argc, char **argv);
 extern void set_i18n(void);
@@ -48,7 +50,7 @@ extern void start_bash(void);
 extern void wait_for_X_exit(void);
 extern void set_text_mode(void);
 
-extern void open_log(void);
+extern void open_log(const char *);
 extern void lprintf(const char *, ...);
 extern void log_environment(void);
 

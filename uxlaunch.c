@@ -19,11 +19,29 @@
 
 #include "uxlaunch.h"
 
+/*
+ * Launch apps that form the user's X session
+ */
+static void
+launch_user_session (void)
+{
+	start_dbus_session_bus();
+
+	/* gconf needs dbus */
+	start_gconf();
+
+	maybe_start_screensaver();
+
+	start_desktop_session();
+
+	get_session_type();
+	autostart_panels();
+	autostart_desktop_files();
+	do_autostart();
+}
 
 int main(int argc, char **argv)
 {
-	open_log();
-
 	/*
 	 * General objective:
 	 * Do the things that need root privs first,
@@ -49,6 +67,7 @@ int main(int argc, char **argv)
 	 */
 
 	get_options(argc, argv);
+
 	set_tty();
 
 	setup_pam_session();
@@ -70,22 +89,10 @@ int main(int argc, char **argv)
 
 	start_ssh_agent();
 
+	/* dbus needs the CK env var */
 	setup_consolekit_session();
 
-	/* dbus needs the CK env var */
-	start_dbus_session_bus();
-
-	/* gconf needs dbus */
-	start_gconf();
-
-	maybe_start_screensaver();
-
-	start_desktop_session();
-
-	get_session_type();
-	autostart_panels();
-	autostart_desktop_files();
-	do_autostart();
+	launch_user_session();
 
 	wait_for_X_exit();
 
