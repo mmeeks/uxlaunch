@@ -23,8 +23,14 @@
  * Launch apps that form the user's X session
  */
 static void
-launch_user_session (void)
+launch_user_session(void)
 {
+	start_ssh_agent();
+
+	/* dbus needs the CK env var */
+	if (!x_session_only)
+		setup_consolekit_session();
+
 	start_dbus_session_bus();
 
 	/* gconf needs dbus */
@@ -68,6 +74,12 @@ int main(int argc, char **argv)
 
 	get_options(argc, argv);
 
+	if (x_session_only) {
+		launch_user_session();
+		wait_for_session_exit();
+		return 0;
+	}
+
 	set_tty();
 
 	setup_pam_session();
@@ -75,7 +87,6 @@ int main(int argc, char **argv)
 	setup_xauth();
 
 	switch_to_user();
-
 
 	start_X_server();
 
@@ -86,11 +97,6 @@ int main(int argc, char **argv)
 	 */
 
 	wait_for_X_signal();
-
-	start_ssh_agent();
-
-	/* dbus needs the CK env var */
-	setup_consolekit_session();
 
 	launch_user_session();
 

@@ -177,7 +177,7 @@ void get_options(int argc, char **argv)
 
 	open_log(!x_session_only ? LOGFILE : NULL);
 
-	lprintf("uxlaunch v%s started.", VERSION);
+	lprintf("uxlaunch v%s started%s.", VERSION, x_session_only ? " for x session only" : "" );
 	lprintf("user \"%s\", tty #%d, session \"%s\"", username, tty, session);
 
 	pass = getpwnam(username);

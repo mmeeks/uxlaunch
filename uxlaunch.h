@@ -46,6 +46,7 @@ extern void autostart_panels(void);
 extern void autostart_desktop_files(void);
 extern void do_autostart(void);
 extern void start_desktop_session(void);
+extern void wait_for_session_exit(void);
 extern void start_bash(void);
 extern void wait_for_X_exit(void);
 extern void set_text_mode(void);
