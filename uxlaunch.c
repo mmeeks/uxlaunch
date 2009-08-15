@@ -25,6 +25,8 @@
 static void
 launch_user_session(void)
 {
+	setup_user_environment ();
+
 	start_ssh_agent();
 
 	/* dbus needs the CK env var */

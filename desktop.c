@@ -341,7 +341,6 @@ void wait_for_session_exit(void)
 {	
 	lprintf("wait_for_session_exit");
 	for (;;) {
-		int status;
 		errno = 0;
 	        if (waitpid (session_pid, NULL, 0) < 0) {
 	                if (errno == EINTR) {

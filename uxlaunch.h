@@ -30,6 +30,7 @@ extern void set_i18n(void);
 extern void setup_pam_session(void);
 extern void close_pam_session(void);
 extern void switch_to_user(void);
+extern void setup_user_environment (void);
 extern void set_tty(void);
 extern void setup_xauth(void);
 extern void start_X_server(void);

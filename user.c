@@ -78,12 +78,6 @@ void switch_to_user(void)
 	setenv("PATH", buf, 1);
 	snprintf(user_xauth_path, PATH_MAX, "%s/.Xauthority", pass->pw_dir);
 	setenv("XAUTHORITY", user_xauth_path, 1);
-	snprintf(buf, PATH_MAX, "%s/.cache", pass->pw_dir);
-	mkdir(buf, 0700);
-	setenv("XDG_CACHE_HOME", buf, 0);
-	snprintf(buf, PATH_MAX, "%s/.config", pass->pw_dir);
-	setenv("XDG_CONFIG_HOME", buf, 0);
-	setenv("OOO_FORCE_DESKTOP","gnome", 0);
 
 	set_i18n();
 
@@ -143,10 +137,6 @@ void set_i18n(void)
 			 * and other user stuff we don't care for now */
 			if (!strcmp(key, "LANG")) {
 				setenv(key, val, 1);
-				if (strstr(val, "zh_")) {
-					setenv("GTK_IM_MODULE", "scim-bridge", 0);
-					setenv("CLUTTER_IM_MODULE","scim-bridge", 0);
-				}
 			}
 			if (!strcmp(key, "SYSFONT"))
 				setenv(key, val, 1);
@@ -155,4 +145,32 @@ void set_i18n(void)
 	}
 
 	log_environment();
+}
+
+void setup_user_environment (void)
+{
+	int i;
+	char buf[PATH_MAX];
+	const char *lang;
+	static const char *scim_langs[] = {
+		"zh_", "ko_", "ja_", NULL
+	};
+
+	/* launch scim only where it makes sense */
+	lang = getenv ("LANG");
+	for (i = 0; lang && scim_langs[i]; i++) {
+		if (strstr (lang, scim_langs[i])) {
+			setenv("GTK_IM_MODULE", "scim-bridge", 0);
+			setenv("CLUTTER_IM_MODULE","scim-bridge", 0);
+			break;
+		}
+	}
+
+	/* setup misc. user directories and variables */
+	snprintf(buf, PATH_MAX, "%s/.cache", pass->pw_dir);
+	mkdir(buf, 0700);
+	setenv("XDG_CACHE_HOME", buf, 0);
+	snprintf(buf, PATH_MAX, "%s/.config", pass->pw_dir);
+	setenv("XDG_CONFIG_HOME", buf, 0);
+	setenv("OOO_FORCE_DESKTOP","gnome", 0);
 }
